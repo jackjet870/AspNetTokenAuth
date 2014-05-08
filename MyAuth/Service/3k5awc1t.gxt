@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace MyAuth.Service
+{
+    /// <summary>
+    /// This is the Token service 
+    /// to Create Token ,and get the expire
+    /// </summary>
+    public class TokenService
+    {
+        private static string _secretKey = "wuweiwei1989";
+        //private static DateTime _expireTime = DateTime.MinValue;
+        private static IDictionary<string, object> _tokenDictionary;
+        public TokenService(string token)
+        {
+            try
+            {
+                _tokenDictionary = JWT.JsonWebToken.DecodeToObject(token, _secretKey)
+                    as IDictionary<string, object>;
+            }
+            catch (JWT.SignatureVerificationException)
+            {
+                
+                throw;
+            }
+        }
+
+        public bool IsExpired()
+        {
+            DateTime dt;
+            if (DateTime.TryParse(_tokenDictionary["expiredtime"].ToString(),out dt))
+                return dt < DateTime.UtcNow;
+        }
+    }
+}

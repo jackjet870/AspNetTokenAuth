@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using MyAuth.Models;
+
+namespace MyAuth.Controllers
+{
+    public class TokenController : ApiController
+    {
+        [AllowAnonymous]
+        [Route("Token")]
+        public string GetAuthToken(LogonModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                
+            }
+            return null;
+        }
+
+        public User GetUserByLogon(LogonModel model)
+        {
+            using (var db = new Db())
+            {
+                return db.Users.FirstOrDefault(u => u.UserName == model.UserName && u.Password == model.UserPass);
+            }
+            return null;
+        }
+    }
+}
